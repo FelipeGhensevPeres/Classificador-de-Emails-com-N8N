@@ -1,0 +1,374 @@
+{
+  "name": "Multiagentes Classificador",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "64a65abb-de18-46ec-8d00-3c269c2e81e7",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gt0UTz2YBW1hS2Mb",
+          "name": "Enviando o Email"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9fbd6e6f-f86d-479d-b95b-f400d9abd6e7",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "36f35571-978b-48ed-8654-7e299b7dad1c",
+              "name": "threadID",
+              "value": "={{ $json.threadId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        0
+      ],
+      "id": "4f207ac7-9883-4c70-b55d-62b9c8abb8d6",
+      "name": "Padronizaçao"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        688,
+        208
+      ],
+      "id": "6e369f83-c2f4-4df9-b514-9203e4061f79",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DrFMVIkUG8WzjRLg",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Comercial",
+              "description": "Mensagens como dúvidas sobre planos, formas de pagamento, contratação de serviços, funcionalidade de produtos ou benefícios.\n\npalavras como: plano, assinatura, contratar, contratar, serviço, adesão, mensalidade, pacote, upgrade, cancelamento, renovação, troca de plano, pagamento, boleto, cartão, pix, transferência, fatura, cobrança, vencimento, parcela, desconto, valor, preço, como funciona, benefício, recurso, funcionalidade, vantagens, suporte, ajuda, disponibilidade"
+            },
+            {
+              "category": "Técnico",
+              "description": "Dúvidas sobre instalação, funcionamento de sistemas, configuração de rede, erros em softwares, lentidão, login, atualização de programas, compatibilidade ou suporte técnico em geral.\n\nerro, falha,bug,travando,lento,não abre,não conecta,problema,não funciona,travamento,crash,reiniciar,mensagem de erro,atualização falhou,instalar,reinstalar,configurar,setup,atualização,download,driver,compatibilidade,sistema operacional,versão,conexão,rede,servidor,acesso negado,login,senha,autenticação,nãoconsigo entrar,redefinir,usuário,bloqueio,conta,permissão,suporte técnico,manutenção,assistência,atendimento técnico,ajuda,diagnóstico,verificar,testar,corrigir,solução,reparo,desempenho,configuração,hardware,software,sistema,memória,armazenamento,processador, rede wi-fi, conexão lenta"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        688,
+        0
+      ],
+      "id": "aa7b1040-b5c1-4a5a-9438-a7892314ec37",
+      "name": "Classificador de Email"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "NjPILc4wPwzuVyEc",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/NjPILc4wPwzuVyEc",
+          "cachedResultName": "Sub Agente - Comercial"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $json.text }}",
+            "threadID": "={{ $json.threadID }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "threadID",
+              "displayName": "threadID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        -112
+      ],
+      "id": "053a0669-c075-4d40-9842-8632d51f9a36",
+      "name": "Agente Comercial"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "FZQ692zT38EUedUr",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/FZQ692zT38EUedUr",
+          "cachedResultName": "Sub Agente - Tecnico"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $('Padronizaçao').item.json.text }}",
+            "threadID": "={{ $('Padronizaçao').item.json.threadID }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "threadID",
+              "displayName": "threadID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        96
+      ],
+      "id": "a16962e4-ed48-43cd-9ab7-0a0f42f1f917",
+      "name": "Agente Tecnico"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "threadId": "={{ $('Gmail Trigger').item.json.threadId }}",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1296,
+        -16
+      ],
+      "id": "47ac945f-40c9-488a-b5d1-7b9bcdd425cd",
+      "name": "Responder Email",
+      "webhookId": "84c5cba1-5e80-41d9-806f-eedb9ab5e6d6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gt0UTz2YBW1hS2Mb",
+          "name": "Enviando o Email"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8c5901a7-968c-4b37-b1a3-b43cf20bba12",
+              "leftValue": "={{ $json.from.value[0].address }}",
+              "rightValue": "={{ $json.headers['delivered-to'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        0
+      ],
+      "id": "db8a390c-5ddd-48d7-80f3-8121fcf03a6f",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Padronizaçao": {
+      "main": [
+        [
+          {
+            "node": "Classificador de Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classificador de Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificador de Email": {
+      "main": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente Tecnico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Tecnico": {
+      "main": [
+        [
+          {
+            "node": "Responder Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Comercial": {
+      "main": [
+        [
+          {
+            "node": "Responder Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Padronizaçao",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Padronizaçao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "47a92495-6fa9-4224-a4a3-35be3a19fb21",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "57d3c60df1be1218c5319c71d6e249064cbef8ec47fcb024575d7bf3a685a45d"
+  },
+  "id": "WpucGXWiWBwD8JiQ",
+  "tags": []
+}
