@@ -31,8 +31,7 @@ ESTRUTURA--
    *Responder E-mail   
    - Envia automaticamente a resposta gerada na mesma thread da mensagem original.
 
-OQUE EU USEI -- 
-
+OQ EU USEI --
  [n8n](https://n8n.io)  -------- Plataforma de automação no-code 
  [Google Gemini API](https://ai.google.dev/gemini-api) ------  Classificação semântica e compreensão de texto 
  [Gmail API](https://developers.google.com/gmail/api) ------- Envio e recebimento de mensagens 
@@ -43,4 +42,4 @@ SUB AGENTES --
 Agente Comercial: responde dúvidas sobre planos, preços, assinaturas e formas de pagamento.  
 Agente Técnico: responde dúvidas de suporte, falhas em produtos e instruções técnicas.  
 
-Cada agente possui um prompt personalizado e pode ser treinado ou ajustado da forma que você quiser.
+Cada agente possui um prompt personalizado e pode ser treinado o ajustado da forma que você quiser.
