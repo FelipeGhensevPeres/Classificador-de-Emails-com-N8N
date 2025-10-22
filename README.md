@@ -54,3 +54,9 @@ Cada agente possui um prompt personalizado e pode ser treinado o ajustado da for
 ```bash
 git --version
 ```
+
+- Como listar os arquivos da minha pasta
+
+```bash
+ls
+```
